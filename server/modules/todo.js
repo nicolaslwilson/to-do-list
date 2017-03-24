@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
     else {
       //No error... then connected!
       //Get All To Do Items
-      db.query('SELECT * FROM "todoitems";',
+      db.query('SELECT * FROM "todoitems" ORDER BY "id" ASC;',
         function (queryError, result) {
           done(); //releases connection to pool
           if (queryError) {
@@ -68,7 +68,7 @@ router.post('/add', function (req, res) {
 });
 
 router.put('/complete', function (req, res) {
-  console.log('in /todo/add', req.body);
+  console.log('in /todo/complete', req.body);
   var id = req.body.id;
   pool.connect(function (errorConnectingToDatabase, db, done) {
     if(errorConnectingToDatabase) {
@@ -77,7 +77,7 @@ router.put('/complete', function (req, res) {
     }
     else {
       //No error... then connected!
-      //INSERT INTO "books" ("author", "title") VALUES ('Nic','Rules');
+      //Toggle complete status
       db.query('UPDATE "todoitems" SET "complete" = NOT "complete" WHERE "id" = $1;',
         [id],
         function (queryError, result) {
