@@ -54,7 +54,19 @@ function addToDoSubmit(event) {
 }
 
 function toggleCompleteStatus() {
-  console.log("ToggleCompleteStatus Click");
+  var $el = $(this).closest('li');
+  var id = $el.attr('id');
+  console.log(id);
+  $.ajax({
+    type: 'PUT',
+    url: '/todo/complete',
+    data: {
+      id: id
+    },
+    success: function (response) {
+      refreshDOM();
+    }
+  });
 }
 
 function deleteToDoItem() {

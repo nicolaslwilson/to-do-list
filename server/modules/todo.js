@@ -67,4 +67,32 @@ router.post('/add', function (req, res) {
   });
 });
 
+router.put('/complete', function (req, res) {
+  console.log('in /todo/add', req.body);
+  var id = req.body.id;
+  pool.connect(function (errorConnectingToDatabase, db, done) {
+    if(errorConnectingToDatabase) {
+      console.log("Error connecting to the database.\n", errorConnectingToDatabase);//2nd param for educational use
+      res.sendStatus(500);
+    }
+    else {
+      //No error... then connected!
+      //INSERT INTO "books" ("author", "title") VALUES ('Nic','Rules');
+      db.query('UPDATE "todoitems" SET "complete" = NOT "complete" WHERE "id" = $1;',
+        [id],
+        function (queryError, result) {
+          done(); //releases connection to pool
+          if (queryError) {
+            console.log("Error making query.\n", queryError); //2nd param for educational use
+            res.sendStatus(500);
+          } else {
+            // console.log(result);
+            res.sendStatus(201);
+          }
+        }
+      );
+    }
+  });
+});
+
 module.exports = router;
