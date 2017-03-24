@@ -13,6 +13,32 @@ var config = {
 
 var pool = new pg.Pool(config);
 
+router.get('/', function (req, res) {
+  console.log('get /todo');
+  pool.connect(function (errorConnectingToDatabase, db, done) {
+    if(errorConnectingToDatabase) {
+      console.log("Error connecting to the database.\n", errorConnectingToDatabase);//2nd param for educational use
+      res.sendStatus(500);
+    }
+    else {
+      //No error... then connected!
+      //Get All To Do Items
+      db.query('SELECT * FROM "todoitems";',
+        function (queryError, result) {
+          done(); //releases connection to pool
+          if (queryError) {
+            console.log("Error making query.\n", queryError); //2nd param for educational use
+            res.sendStatus(500);
+          } else {
+            // console.log(result);
+            res.send(result.rows);
+          }
+        }
+      );
+    }
+  });
+});
+
 router.post('/add', function (req, res) {
   console.log('in /todo/add', req.body);
   var toDoItem = req.body.toDoItem;
