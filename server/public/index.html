@@ -4,20 +4,24 @@
     <meta charset="utf-8">
     <script src="vendors/jquery.js" charset="utf-8"></script>
     <script src="scripts/client.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/pure-min.css">
+    <link rel="stylesheet" href="/styles/style.css">
     <title>To Do</title>
   </head>
   <body>
     <h1>To Do SPA</h1>
-    <div class="toDoInput">
-      <form class="addToDoForm">
-        <input type="text" name="addToDoInput" class="addToDoInput" value="" placeholder="To Do">
-        <input type="submit" name="submit" value="Add">
-      </form>
-    </div>
-    <div id="toDoContainer">
-      <ul id="toDoList">
-
-      </ul>
+    <div class="app-container">
+      <div class="toDoInput">
+        <form class="addToDoForm pure-form">
+          <input type="text" name="addToDoInput" class="addToDoInput" value="" placeholder="To Do">
+          <input type="submit" name="submit" value="Add" class="pure-button pure-button-primary">
+        </form>
+      </div>
+      <div id="toDoContainer">
+        <table id="toDoList" class="pure-table pure-table-striped">
+        </table>
+      </div>
     </div>
   </body>
 </html>

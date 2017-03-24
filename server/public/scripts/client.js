@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 function addEventListeners() {
   $('.addToDoForm').on('submit', addToDoSubmit);
-  $('#toDoList').on('click', '.complete', toggleCompleteStatus);
+  $('#toDoList').on('change', '.completeCheckbox', toggleCompleteStatus);
   $('#toDoList').on('click', '.delete', deleteToDoItem);
 }
 
@@ -29,11 +29,8 @@ function getToDoData() {
 function appendToDoList(toDoArray) {
   for (var i = 0; i < toDoArray.length; i++) {
     var toDoObject = toDoArray[i];
-    $('#toDoList').append('<li id="' + toDoObject.id + '" class="' + toDoObject.complete + '">');
-    var $el = $('#toDoList').children().last();
-    $el.append('<p>').children('p').text(toDoObject.text);
-    $el.append('<button class="complete">Complete</button>');
-    $el.append('<button class="delete">Delete</button>');
+    var toDoElement = populateToDoListItem(toDoObject);
+    $('#toDoList').append(toDoElement);
   }
 }
 
@@ -55,7 +52,7 @@ function addToDoSubmit(event) {
 }
 
 function toggleCompleteStatus() {
-  var $el = $(this).closest('li');
+  var $el = $(this).closest('tr');
   var id = $el.attr('id');
   console.log(id);
   $.ajax({
@@ -72,7 +69,7 @@ function toggleCompleteStatus() {
 }
 
 function deleteToDoItem() {
-  var $el = $(this).closest('li');
+  var $el = $(this).closest('tr');
   var id = $el.attr('id');
   console.log(id);
   if (confirm("Are you sure you want to delete this item?")) {
@@ -85,10 +82,25 @@ function deleteToDoItem() {
       }
     });
   }
-
 }
 
 
 function populateToDoListItem (toDoObject) {
-
+  var $el = $('<tr>', {"id": toDoObject.id, "class": toDoObject.complete});
+  $el.append('<td>').children('td').text(toDoObject.text);
+  $el.append($('<td>')
+              .append($('<input>')
+                .attr('type', 'checkbox')
+                .addClass('completeCheckbox')
+                .prop('checked', toDoObject.complete)
+              )
+  );
+  $el.append($('<td>')
+              .append($('<button>')
+                .text("Delete")
+                .addClass('delete')
+                .addClass('pure-button')
+              )
+  );
+  return $el;
 }
