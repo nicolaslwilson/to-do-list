@@ -6,23 +6,8 @@ $(document).ready(function() {
 
 function addEventListeners() {
   $('.addToDoForm').on('submit', addToDoSubmit);
-
-}
-
-function addToDoSubmit(event) {
-  event.preventDefault();
-  var toDoItem = $('.addToDoInput').val();
-  console.log(toDoItem);
-  $.ajax({
-    type: 'POST',
-    url: '/todo/add',
-    data: {
-      toDoItem: toDoItem
-    },
-    success: function (response) {
-      refreshDOM();
-    }
-  });
+  $('#toDoList').on('click', '.complete', toggleCompleteStatus);
+  $('#toDoList').on('click', '.delete', deleteToDoItem);
 }
 
 function refreshDOM() {
@@ -41,16 +26,41 @@ function getToDoData() {
   });
 }
 
-
 function appendToDoList(toDoArray) {
   for (var i = 0; i < toDoArray.length; i++) {
-    $('#toDoList').append('<li>');
+    var toDoObject = toDoArray[i];
+    $('#toDoList').append('<li id="' + toDoObject.id + '" class="' + toDoObject.complete + '">');
     var $el = $('#toDoList').children().last();
-    $el.append('<p>').children('p').text(toDoArray[i].text);
-    $el.append('<button class="Complete">Complete</button>');
-    $el.append('<button class="Delete">Delete</button>');
+    $el.append('<p>').children('p').text(toDoObject.text);
+    $el.append('<button class="complete">Complete</button>');
+    $el.append('<button class="delete">Delete</button>');
   }
 }
+
+function addToDoSubmit(event) {
+  event.preventDefault();
+  var toDoItem = $('.addToDoInput').val();
+  console.log(toDoItem);
+  $.ajax({
+    type: 'POST',
+    url: '/todo/add',
+    data: {
+      toDoItem: toDoItem
+    },
+    success: function (response) {
+      refreshDOM();
+    }
+  });
+}
+
+function toggleCompleteStatus() {
+  console.log("ToggleCompleteStatus Click");
+}
+
+function deleteToDoItem() {
+  console.log("deleteToDoItem Click");
+}
+
 
 function populateToDoListItem (toDoObject) {
 
