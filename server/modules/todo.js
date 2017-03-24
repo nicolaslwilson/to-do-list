@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
     else {
       //No error... then connected!
       //Get All To Do Items
-      db.query('SELECT * FROM "todoitems" ORDER BY "id" ASC;',
+      db.query('SELECT * FROM "todoitems" ORDER BY "complete" ASC, "id" ASC;',
         function (queryError, result) {
           done(); //releases connection to pool
           if (queryError) {
