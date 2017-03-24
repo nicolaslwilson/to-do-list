@@ -75,14 +75,17 @@ function deleteToDoItem() {
   var $el = $(this).closest('li');
   var id = $el.attr('id');
   console.log(id);
-  $.ajax({
-    type: 'DELETE',
-    url: '/todo/delete/' + id,
-    success: function (response) {
-      console.log(response);
-      refreshDOM();
-    }
-  });
+  if (confirm("Are you sure you want to delete this item?")) {
+    $.ajax({
+      type: 'DELETE',
+      url: '/todo/delete/' + id,
+      success: function (response) {
+        console.log(response);
+        refreshDOM();
+      }
+    });
+  }
+
 }
 
 
