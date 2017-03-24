@@ -87,13 +87,18 @@ function deleteToDoItem() {
 
 function populateToDoListItem (toDoObject) {
   var $el = $('<tr>', {"id": toDoObject.id, "class": toDoObject.complete});
-  $el.append('<td>').children('td').text(toDoObject.text);
   $el.append($('<td>')
+        .append($('<form class="pure-form">')
               .append($('<input>')
                 .attr('type', 'checkbox')
                 .addClass('completeCheckbox')
                 .prop('checked', toDoObject.complete)
               )
+        )
+  );
+  $el.append(
+    $('<td>')
+      .text(toDoObject.text)
   );
   $el.append($('<td>')
               .append($('<button>')
