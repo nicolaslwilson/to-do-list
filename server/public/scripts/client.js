@@ -48,6 +48,7 @@ function addToDoSubmit(event) {
       toDoItem: toDoItem
     },
     success: function (response) {
+      console.log(response);
       refreshDOM();
     }
   });
@@ -64,13 +65,24 @@ function toggleCompleteStatus() {
       id: id
     },
     success: function (response) {
+      console.log(response);
       refreshDOM();
     }
   });
 }
 
 function deleteToDoItem() {
-  console.log("deleteToDoItem Click");
+  var $el = $(this).closest('li');
+  var id = $el.attr('id');
+  console.log(id);
+  $.ajax({
+    type: 'DELETE',
+    url: '/todo/delete/' + id,
+    success: function (response) {
+      console.log(response);
+      refreshDOM();
+    }
+  });
 }
 
 
