@@ -7,7 +7,7 @@ $(document).ready(function() {
 function addEventListeners() {
   $('.addToDoForm').on('submit', addToDoSubmit);
   $('#toDoList').on('change', '.completeCheckbox', toggleCompleteStatus);
-  $('#toDoList').on('click', '.delete', deleteToDoItem);
+  $('#toDoList').on('click', '.deleteButton', deleteToDoItem);
 }
 
 function refreshDOM() {
@@ -52,7 +52,7 @@ function addToDoSubmit(event) {
 }
 
 function toggleCompleteStatus() {
-  var $el = $(this).closest('tr');
+  var $el = $(this).closest('.to-do-list-item');
   var id = $el.attr('id');
   console.log(id);
   $.ajax({
@@ -69,7 +69,7 @@ function toggleCompleteStatus() {
 }
 
 function deleteToDoItem() {
-  var $el = $(this).closest('tr');
+  var $el = $(this).closest('.to-do-list-item');
   var id = $el.attr('id');
   console.log(id);
   if (confirm("Are you sure you want to delete this item?")) {
@@ -86,26 +86,34 @@ function deleteToDoItem() {
 
 
 function populateToDoListItem (toDoObject) {
-  var $el = $('<tr>', {"id": toDoObject.id, "class": toDoObject.complete});
-  $el.append($('<td>')
-        .append($('<form class="pure-form">')
-              .append($('<input>')
-                .attr('type', 'checkbox')
-                .addClass('completeCheckbox')
-                .prop('checked', toDoObject.complete)
-              )
-        )
+  var $el = $('<div>',
+              {"id": toDoObject.id, "class": toDoObject.complete}
+            )
+              .addClass('pure-u-g to-do-list-item');
+  $el.append(
+    $('<div>')
+      .addClass('pure-u-1-12')
+      .append($('<form class="pure-form">')
+            .append($('<input>')
+              .attr('type', 'checkbox')
+              .addClass('completeCheckbox')
+              .prop('checked', toDoObject.complete)
+            )
+      )
   );
   $el.append(
-    $('<td>')
+    $('<div>')
+      .addClass('pure-u-2-3')
       .text(toDoObject.text)
   );
-  $el.append($('<td>')
-              .append($('<button>')
-                .text("Delete")
-                .addClass('delete')
-                .addClass('pure-button')
-              )
+  $el.append(
+    $('<div>')
+      .addClass('pure-u-1-4')
+      .append($('<button>')
+        .text("Delete")
+        .addClass('deleteButton')
+        .addClass('pure-button')
+      )
   );
   return $el;
 }
