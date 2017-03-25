@@ -13,6 +13,9 @@ h1 {
 
 #toDoList {
   width: 100%;
+  list-style: none;
+  margin: 2em 0;
+  padding: 0;
 }
 
 .to-do-list-item {

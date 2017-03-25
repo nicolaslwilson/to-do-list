@@ -86,7 +86,7 @@ function deleteToDoItem() {
 
 
 function populateToDoListItem (toDoObject) {
-  var $el = $('<div>',
+  var $el = $('<li>',
               {"id": toDoObject.id, "class": toDoObject.complete}
             )
               .addClass('pure-u-g to-do-list-item');
