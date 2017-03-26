@@ -26,6 +26,7 @@ h1 {
   padding: 1em;
   border: 1px solid rgba(0,0,0,0.03);
   border-bottom: 0;
+  min-height: 34px;
 }
 
 .to-do-list-item:last-child {
@@ -40,19 +41,22 @@ h1 {
   background-color: rgb(255, 77, 77);
 }
 
+.to-do-list-item .confirmDeleteButtonContainer {
+  overflow: hidden;
+  position: absolute;
+}
+
 .to-do-list-item .confirmDeleteButton {
-  float: left;
   margin-right: 1em;
   color: white;
   background-color: rgb(255, 77, 77);
 }
 
 .to-do-list-item .cancelDeleteButton {
-  float: right;
   color: white;
   background-color: #6fd19f;
 }
 
 .to-be-deleted {
-  background-color: #ffa2a2;
+  border: 1px solid red;
 }

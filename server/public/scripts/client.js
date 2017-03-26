@@ -71,15 +71,30 @@ function toggleCompleteStatus() {
 }
 
 function confirmDeleteToDoItem() {
-  $(this).closest('.to-do-list-item').addClass('to-be-deleted');
-  $(this).next().show();
-  $(this).hide();
+  var $el = $(this);
+  $el.closest('.to-do-list-item').toggleClass('to-be-deleted');
+  $el.next().show("slide",{
+    direction: "right",
+    complete: function() {
+
+    }
+  });
+  $el.hide("slide",{
+    direction: "right"
+  });
 }
 
 function cancelDeleteToDoItem() {
-  $(this).prev().hide();
-  $(this).hide();
-  $(this).prevAll('.deleteButton').show();
+  var $el = $(this).parent();
+  $el.closest('.to-do-list-item').toggleClass('to-be-deleted');
+  $el.hide("slide",{
+    direction: "right",
+    complete: function () {
+      $el.prev().show("slide", {direction: "right"});
+    }
+  });
+  console.log($el.parent().prev());
+
 }
 
 function deleteToDoItem() {
@@ -118,32 +133,32 @@ function populateToDoListItem (toDoObject) {
       .addClass('pure-u-2-3')
       .text(toDoObject.text)
   );
-  $el.append(
-    $('<div>')
-      .addClass('pure-u-1-4')
-      .append($('<button>')
-        .text("Delete")
-        .addClass('deleteButton')
-        .addClass('pure-button')
-      )
-      .append(
-        $('<div>')
-        .hide()
-        .append($('<button>')
-          .text("Confirm")
-          .addClass('confirmDeleteButton')
-          .addClass('pure-button')
-        )
-        .append($('<button>')
-          .text("Cancel")
-          .addClass('cancelDeleteButton')
-          .addClass('pure-button')
-        )
-      )
-  );
+  $el.append(createDeleteButtonsForToDoListItem());
   return $el;
 }
 
-// function createDeleteButtonsForToDoListItem() {
-//   var $el = $
-// }
+function createDeleteButtonsForToDoListItem() {
+  var $el = $('<div>')
+    .addClass('pure-u-1-4')
+    .append($('<button>')
+      .text("Delete")
+      .addClass('deleteButton')
+      .addClass('pure-button')
+    )
+    .append(
+      $('<div>')
+      .addClass('confirmDeleteButtonContainer')
+      .hide()
+      .append($('<button>')
+        .text("Confirm")
+        .addClass('confirmDeleteButton')
+        .addClass('pure-button')
+      )
+      .append($('<button>')
+        .text("Cancel")
+        .addClass('cancelDeleteButton')
+        .addClass('pure-button')
+      )
+    );
+  return $el;
+}
