@@ -4,6 +4,10 @@ html, body {
 
 h1 {
   text-align: center;
+  background-color: #0078e7;
+  color: white;
+  padding: 0.7em;
+  margin: 0 0 1em 0;
 }
 
 .app-container {
@@ -11,7 +15,7 @@ h1 {
   margin: 0 auto;
 }
 
-.addToDoInput {
+.addToDoForm input {
   margin: 0 auto;
 }
 
@@ -32,6 +36,10 @@ h1 {
 .to-do-list-item:last-child {
   padding: 1em;
   border: 1px solid rgba(0,0,0,0.03);
+}
+
+.to-do-list-item p {
+  margin: 0.5em 0 0 0;
 }
 
 .to-do-list-item .deleteButton {

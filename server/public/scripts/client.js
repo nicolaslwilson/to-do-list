@@ -48,6 +48,7 @@ function addToDoSubmit(event) {
     },
     success: function (response) {
       console.log(response);
+      $('.addToDoInput').val('');
       refreshDOM();
     }
   });
@@ -129,7 +130,7 @@ function populateToDoListItem (toDoObject) {
       )
   );
   $el.append(
-    $('<div>')
+    $('<p>')
       .addClass('pure-u-2-3')
       .text(toDoObject.text)
   );
