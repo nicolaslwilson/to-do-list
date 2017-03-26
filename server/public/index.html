@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8">
     <script src="vendors/jquery.js" charset="utf-8"></script>
+    <script src="vendors/jquery-ui.min.js" charset="utf-8"></script>
     <script src="scripts/client.js" charset="utf-8"></script>
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/pure-min.css">
+    <link rel="stylesheet" href="/styles/jquery-ui.min.css">
     <link rel="stylesheet" href="/styles/style.css">
     <title>To Do</title>
   </head>
@@ -13,8 +15,8 @@
     <h1>To Do SPA</h1>
     <div class="app-container">
       <div class="toDoInput">
-        <form class="addToDoForm pure-form">
-          <input type="text" name="addToDoInput" class="addToDoInput" value="" placeholder="To Do">
+        <form class="addToDoForm pure-form pure-g">
+          <input type="text" name="addToDoInput" class="addToDoInput pure-u-5-6" value="" placeholder="To Do" required>
           <input type="submit" name="submit" value="Add" class="pure-button pure-button-primary">
         </form>
       </div>

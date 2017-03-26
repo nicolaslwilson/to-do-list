@@ -7,7 +7,9 @@ $(document).ready(function() {
 function addEventListeners() {
   $('.addToDoForm').on('submit', addToDoSubmit);
   $('#toDoList').on('change', '.completeCheckbox', toggleCompleteStatus);
-  $('#toDoList').on('click', '.deleteButton', deleteToDoItem);
+  $('#toDoList').on('click', '.deleteButton', confirmDeleteToDoItem);
+  $('#toDoList').on('click', '.confirmDeleteButton', deleteToDoItem);
+  $('#toDoList').on('click', '.cancelDeleteButton', cancelDeleteToDoItem);
 }
 
 function refreshDOM() {
@@ -68,20 +70,30 @@ function toggleCompleteStatus() {
   });
 }
 
+function confirmDeleteToDoItem() {
+  $(this).closest('.to-do-list-item').addClass('to-be-deleted');
+  $(this).next().show();
+  $(this).hide();
+}
+
+function cancelDeleteToDoItem() {
+  $(this).prev().hide();
+  $(this).hide();
+  $(this).prevAll('.deleteButton').show();
+}
+
 function deleteToDoItem() {
   var $el = $(this).closest('.to-do-list-item');
   var id = $el.attr('id');
   console.log(id);
-  if (confirm("Are you sure you want to delete this item?")) {
-    $.ajax({
-      type: 'DELETE',
-      url: '/todo/delete/' + id,
-      success: function (response) {
-        console.log(response);
-        refreshDOM();
-      }
-    });
-  }
+  $.ajax({
+    type: 'DELETE',
+    url: '/todo/delete/' + id,
+    success: function (response) {
+      console.log(response);
+      refreshDOM();
+    }
+  });
 }
 
 
@@ -114,6 +126,24 @@ function populateToDoListItem (toDoObject) {
         .addClass('deleteButton')
         .addClass('pure-button')
       )
+      .append(
+        $('<div>')
+        .hide()
+        .append($('<button>')
+          .text("Confirm")
+          .addClass('confirmDeleteButton')
+          .addClass('pure-button')
+        )
+        .append($('<button>')
+          .text("Cancel")
+          .addClass('cancelDeleteButton')
+          .addClass('pure-button')
+        )
+      )
   );
   return $el;
 }
+
+// function createDeleteButtonsForToDoListItem() {
+//   var $el = $
+// }

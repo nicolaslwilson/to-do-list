@@ -11,6 +11,10 @@ h1 {
   margin: 0 auto;
 }
 
+.addToDoInput {
+  margin: 0 auto;
+}
+
 #toDoList {
   width: 100%;
   list-style: none;
@@ -32,4 +36,23 @@ h1 {
 .to-do-list-item .deleteButton {
   float: right;
   margin-right: 1em;
+  color: white;
+  background-color: rgb(255, 77, 77);
+}
+
+.to-do-list-item .confirmDeleteButton {
+  float: left;
+  margin-right: 1em;
+  color: white;
+  background-color: rgb(255, 77, 77);
+}
+
+.to-do-list-item .cancelDeleteButton {
+  float: right;
+  color: white;
+  background-color: #6fd19f;
+}
+
+.to-be-deleted {
+  background-color: #ffa2a2;
 }
