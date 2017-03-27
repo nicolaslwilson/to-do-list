@@ -19,7 +19,7 @@ var toDoApplication = function () {
       type: 'GET',
       url: '/todo',
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         appendToDoList(response);
       }
     });
@@ -59,7 +59,7 @@ var toDoApplication = function () {
         toDoItem: toDoItem
       },
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         //Since the request was successful we can reset the input field
         $('.addToDoInput').val('');
         //The submit button can be re-enabled.
@@ -84,7 +84,7 @@ var toDoApplication = function () {
         id: id
       },
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         stackDo.refreshDOM();
       }
     });
@@ -125,7 +125,7 @@ var toDoApplication = function () {
       type: 'DELETE',
       url: '/todo/delete/' + id,
       success: function (response) {
-        console.log(response);
+        // console.log(response);
         stackDo.refreshDOM();
       }
     });
