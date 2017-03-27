@@ -65,7 +65,7 @@ input:hover, input:focus, button:hover, button:focus {
   background-color: rgb(255, 77, 77);
 }
 
-.to-do-list-item .confirmDeleteButtonContainer {
+.to-do-list-item .confirm-delete-button-container {
   overflow: hidden;
   position: absolute;
 }

@@ -1,6 +1,9 @@
+//An IIFE which returns an object containing the public properties of the stackDo SPA.
 var toDoApplication = function () {
+  //This object will be returned from the IIFE
   var stackDo = {};
 
+  //A private method used by RefreshDOM to append to do list items to the page
   var appendToDoList = function (toDoArray) {
     for (var i = 0; i < toDoArray.length; i++) {
       var toDoObject = toDoArray[i];
@@ -9,6 +12,8 @@ var toDoApplication = function () {
     }
   };
 
+  //Sends a get request to the server.
+  //Expects an array of toDoObjects as the response.
   var getToDoData = function () {
     $.ajax({
       type: 'GET',
@@ -20,15 +25,33 @@ var toDoApplication = function () {
     });
   };
 
+  //Takes a jQuery element as an argument.
+  //Returns the ID of the list item that contains that element.
+  var getToDoID = function ($listItemChild) {
+    //Find the parent element for this to do item
+    var $el = $listItemChild.closest('.to-do-list-item');
+    //Store the ID of this to do item to be sent to the server
+    var id = $el.attr('id');
+    return id;
+  };
+
+  //Empty the toDoList element and fill it with the data from the server
   stackDo.refreshDOM = function () {
     $('#toDoList').empty();
     getToDoData();
   };
 
+
+  //Sends a POST request to the server to add a new to do item to the database
+  //The request sends only a string, the server will populate the other properties automatically
   stackDo.addToDoSubmit = function(event) {
     event.preventDefault();
+    var $el = $(this);
     var toDoItem = $('.addToDoInput').val();
-    console.log(toDoItem);
+    //Prevent further requests from being made until after a response is received
+    $(this).attr("disabled", "disabled");
+    $el.addClass('pure-button-disabled');
+    //Send the to do item to the server in a POST request
     $.ajax({
       type: 'POST',
       url: '/todo/add',
@@ -37,34 +60,23 @@ var toDoApplication = function () {
       },
       success: function (response) {
         console.log(response);
+        //Since the request was successful we can reset the input field
         $('.addToDoInput').val('');
+        //The submit button can be re-enabled.
+        $el.removeAttr('disabled');
+        $el.removeClass('pure-button-disabled');
+        //Refresh the page with the updated information.
         stackDo.refreshDOM();
       }
     });
   };
 
-  stackDo.addToDoSubmit = function(event) {
-    event.preventDefault();
-    var toDoItem = $('.addToDoInput').val();
-    console.log(toDoItem);
-    $.ajax({
-      type: 'POST',
-      url: '/todo/add',
-      data: {
-        toDoItem: toDoItem
-      },
-      success: function (response) {
-        console.log(response);
-        $('.addToDoInput').val('');
-        stackDo.refreshDOM();
-      }
-    });
-  };
-
+  //Allows user to toggle the complete status for a to do list item
+  //Sends a put request to the server with an to do item ID
+  //The server toggles the complete status for that to do item in the database
   stackDo.toggleCompleteStatus = function () {
-    var $el = $(this).closest('.to-do-list-item');
-    var id = $el.attr('id');
-    console.log(id);
+    //Get ID of this list item
+    var id = getToDoID($(this));
     $.ajax({
       type: 'PUT',
       url: '/todo/complete',
@@ -78,6 +90,7 @@ var toDoApplication = function () {
     });
   };
 
+  //Display buttons to confirm whether or not the user intends to delete the to do item
   stackDo.confirmDeleteToDoItem = function () {
     var $el = $(this);
     $el.closest('.to-do-list-item').toggleClass('to-be-deleted');
@@ -92,6 +105,7 @@ var toDoApplication = function () {
     });
   };
 
+  //Cancel deletion and restore original delete button.
   stackDo.cancelDeleteToDoItem = function () {
     var $el = $(this).parent();
     $el.closest('.to-do-list-item').toggleClass('to-be-deleted');
@@ -101,14 +115,12 @@ var toDoApplication = function () {
         $el.prev().show("slide", {direction: "right"});
       }
     });
-    console.log($el.parent().prev());
-
   };
 
+  //After a user has confirmed deletion, send a DELETE request to the server
   stackDo.deleteToDoItem = function () {
-    var $el = $(this).closest('.to-do-list-item');
-    var id = $el.attr('id');
-    console.log(id);
+    //Get ID of this list item
+    var id = getToDoID($(this));
     $.ajax({
       type: 'DELETE',
       url: '/todo/delete/' + id,
@@ -119,6 +131,8 @@ var toDoApplication = function () {
     });
   };
 
+  //Takes an object with an id, text and boolean complete property
+  //Returns a list item element populated with data from the toDoObject
   var populateToDoListItem = function  (toDoObject) {
     var $el = $('<li>',
                 {"id": toDoObject.id, "class": "complete-" + toDoObject.complete}
@@ -144,17 +158,23 @@ var toDoApplication = function () {
     return $el;
   };
 
+  //Called by populateToDoListItem
+  //Creates buttons to allow user to delete individual to do items
   var createDeleteButtonsForToDoListItem = function () {
     var $el = $('<div>')
       .addClass('pure-u-1-4')
+      .addClass('delete-buttons-container')
+      //Adds delete button
       .append($('<button>')
         .text("Delete")
         .addClass('deleteButton')
         .addClass('pure-button')
       )
+      //These buttons are hidden when the page loads.
+      //When a user clicks the delete button they are shown to confirm deletion
       .append(
         $('<div>')
-        .addClass('confirmDeleteButtonContainer')
+        .addClass('confirm-delete-button-container')
         .hide()
         .append($('<button>')
           .text("Confirm")
@@ -169,6 +189,7 @@ var toDoApplication = function () {
       );
     return $el;
   };
+  //Return the object containing the to do application.
   return stackDo;
 }();
 
@@ -181,7 +202,7 @@ var addEventListeners = function () {
 };
 
 $(document).ready(function() {
-  console.log("jQuery loaded");
-  toDoApplication.refreshDOM();
+  console.log("Welcome to StackDo: A Full Stack To Do SPA! :)");
   addEventListeners();
+  toDoApplication.refreshDOM();
 });
