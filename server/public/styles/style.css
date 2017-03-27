@@ -51,7 +51,7 @@ input:hover, input:focus, button:hover, button:focus {
 }
 
 .to-do-list-item.complete-true {
-  background-color: #eeeded;
+  background-color: #ededed;
 }
 
 .to-do-list-item.complete-true p {

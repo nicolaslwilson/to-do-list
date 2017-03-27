@@ -95,10 +95,7 @@ var toDoApplication = function () {
     var $el = $(this);
     $el.closest('.to-do-list-item').toggleClass('to-be-deleted');
     $el.next().show("slide",{
-      direction: "right",
-      complete: function() {
-
-      }
+      direction: "right"
     });
     $el.hide("slide",{
       direction: "right"
